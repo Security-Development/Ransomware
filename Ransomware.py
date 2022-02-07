@@ -33,7 +33,8 @@ def replaceDecrypt(name, text):
 def encrypt():
     img = [r".jpg",r".png",r".jpeg"]
     for i in filelist:
-        if i == os.path.basename(sys.argv[0]) and os.path.splitext(i) in img:
+        a = os.path.splitext(i)
+        if i == os.path.basename(sys.argv[0]) or a[len(a) - 1] in img:
             continue
 
         filedata = open(i , 'r', encoding='UTF8').read()
@@ -51,4 +52,4 @@ def decrypt():
         os.remove(i)
        
 
-encrypt()
+decrypt()
