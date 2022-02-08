@@ -24,7 +24,7 @@ def decode(data):
     return decryptData
 
 def replaceEncrypt(name, text):
-    file = open(name+'.암호됨', 'w', encoding='cp949')
+    file = open(name+'.암호됨', 'w', encoding='utf-8')
     file.write(text)
     file.close()
 
@@ -63,20 +63,22 @@ def encrypt():
         replaceEncrypt(i, encode(filedata.read()))
         print('암호화 완료')
         print('= ' * 20)
-        os.remove(i)
         filedata.close()
+        os.remove(i)
+        print('제거 완료')
     filelist = os.listdir(path)
 
 def decrypt():
     global filelist
     encodefile = [file for file in filelist if file.endswith(r'.암호됨')]
     for i in encodefile:
-        file = open(i, 'r', encoding='cp949').read()
+        file = open(i, 'r', encoding='utf-8')
         print('복호화 진행중')
         print('파일이름 : ' + i)
-        replaceDecrypt(i, decode(file))
+        replaceDecrypt(i, decode(file.read()))
         print('복호화 완료')
         print('= ' * 20)
+        file.close()
         os.remove(i)
     filelist = os.listdir(path)
 
