@@ -9,7 +9,7 @@ filelist = []
 
 def encode(data):
     encryptData = ''
-    for i in range(len(data)):
+    for i in range(len(data) - 1):
         encryptData += chr(ord(data[i]) << 2)+'<-[262L<-[*'
     return encryptData
 
@@ -24,12 +24,12 @@ def decode(data):
     return decryptData
 
 def replaceEncrypt(name, text):
-    file = open(name+'.암호됨', 'w', encoding='UTF8')
+    file = open(name+'.암호됨', 'w', encoding='cp949')
     file.write(text)
     file.close()
 
 def replaceDecrypt(name, text):
-    file = open(name.replace('.암호됨', ''), 'w', encoding='UTF-8')
+    file = open(name.replace('.암호됨', ''), 'w', encoding='cp949')
     file.write(text)
     file.close()
 
@@ -53,23 +53,25 @@ def encrypt():
     
     for i in filelist:
         a = os.path.splitext(i)
+        
         if i == os.path.basename(sys.argv[0]) or a[len(a) - 1] in img:
             continue
 
-        filedata = open(i , 'r', encoding='UTF8').read()
+        filedata = open(i ,  "r", encoding='cp949')
         print('암호화 진행중')
         print('파일이름 : ' + i)
-        replaceEncrypt(i, encode(filedata))
+        replaceEncrypt(i, encode(filedata.read()))
         print('암호화 완료')
         print('= ' * 20)
         os.remove(i)
+        filedata.close()
     filelist = os.listdir(path)
 
 def decrypt():
     global filelist
     encodefile = [file for file in filelist if file.endswith(r'.암호됨')]
     for i in encodefile:
-        file = open(i, 'r', encoding='UTF-8').read()
+        file = open(i, 'r', encoding='cp949').read()
         print('복호화 진행중')
         print('파일이름 : ' + i)
         replaceDecrypt(i, decode(file))
@@ -102,4 +104,5 @@ addButton('Encrypt', move=(100, 100), function=encrypt)
 addButton('Decrypt', move=(360, 100), function=decrypt)
 
 window.show()
+
 
